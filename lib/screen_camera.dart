@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
+import 'package:flutter_text_recognition/file_storage.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'result_screen.dart';
@@ -175,8 +176,10 @@ class _CameraScreenState extends State<CameraScreen>
 
       await navigator.push(
         MaterialPageRoute(
-          builder: (BuildContext context) =>
-              ResultScreen(text: recognizedText.text),
+          builder: (BuildContext context) => ResultScreen(
+            text: recognizedText.text,
+            storage: FileStorage(),
+          ),
         ),
       );
     } catch (e) {

@@ -3,6 +3,7 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 
+import 'file_storage.dart';
 import 'result_screen.dart';
 
 class FileScreen extends StatelessWidget {
@@ -80,8 +81,8 @@ class _ImageFileState extends State<ImageFile> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (context) => ResultScreen(
-                                        text: recotext,
-                                      ),
+                                          text: recotext,
+                                          storage: FileStorage()),
                                     ));
                               },
                               child: Text("result"))
