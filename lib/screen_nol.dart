@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_text_recognition/cek/cek_page.dart';
 import 'package:flutter_text_recognition/screen_file.dart';
 import 'screen_camera.dart';
 
@@ -62,6 +63,15 @@ class ScreenNol extends StatelessWidget {
                         ),
                       ),
                   child: Text("Add input")),
+              // ElevatedButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //           context,
+              //           MaterialPageRoute(
+              //             builder: (context) => CekPage(),
+              //           ));
+              //     },
+              //     child: Text("CekPage")),
               StorageOption(),
             ],
           ),

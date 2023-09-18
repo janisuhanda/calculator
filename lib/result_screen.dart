@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_text_recognition/aes_encryption.dart';
+import 'package:flutter_text_recognition/database_helper.dart';
 
 import 'file_storage.dart';
 
@@ -11,6 +13,7 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AESEncryption encryption = new AESEncryption();
     List datanya = text.split("");
     String calculator = "";
     String hasil = "";
@@ -32,27 +35,41 @@ class ResultScreen extends StatelessWidget {
         hasil = "no defined";
         // print("no defined");
       }
+      // file storage
       // cek file
       storage.cekFile().then((value) {
         //read file value true jika ada file nya
         if (value) {
           storage.readResult().then((data) {
-            var wow = jsonDecode(data.toString());
+            String kodok =
+                encryption.decryptMsg(encryption.getCode(data.toString()));
+            var wow = jsonDecode(kodok);
+            // var wow = jsonDecode(data.toString());
             List datanya = [
               {"data": calculator, "hasil": hasil}
             ];
             // tambah list data
             datanya.addAll(wow);
             var result = jsonEncode(datanya);
-            storage.writeResult(result);
+            var encryptedResult =
+                encryption.encryptMsg(result.toString()).base16;
+            storage.writeResult(encryptedResult);
+            print(result);
           });
         } else {
           List datanya = [
             {"data": calculator, "hasil": hasil}
           ];
           var result = jsonEncode(datanya);
-          storage.writeResult(result);
+          var encryptedResult = encryption.encryptMsg(result.toString()).base16;
+          storage.writeResult(encryptedResult);
         }
+      });
+
+      //create histori
+      DatabaseHelper.createHistory(calculator, hasil);
+      DatabaseHelper.getHistories().then((value) {
+        print(value);
       });
     }
     return Scaffold(
