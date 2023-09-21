@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_text_recognition/cek/cek_page.dart';
 import 'package:flutter_text_recognition/screen_file.dart';
 import 'screen_camera.dart';
+import './bloc/export.dart';
 
 class ScreenNol extends StatelessWidget {
   const ScreenNol({super.key});
 
   @override
   Widget build(BuildContext context) {
+    RecogBloc recogB = context.read<RecogBloc>();
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -15,14 +17,24 @@ class ScreenNol extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Expanded(
-                  child: ListView.builder(
-                itemCount: 20,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: ListTile(
-                      title: Text("input :"),
-                      subtitle: Text("result :"),
-                    ),
+                  child: BlocBuilder<RecogBloc, RecogState>(
+                bloc: recogB,
+                builder: (context, state) {
+                  if (state.allRecogs.isEmpty) {
+                    return Center(
+                      child: Text("TIDAK ADA DATA"),
+                    );
+                  }
+                  return ListView.builder(
+                    itemCount: state.allRecogs.length,
+                    itemBuilder: (context, index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text("input :"),
+                          subtitle: Text("result :"),
+                        ),
+                      );
+                    },
                   );
                 },
               )),
@@ -63,15 +75,15 @@ class ScreenNol extends StatelessWidget {
                         ),
                       ),
                   child: Text("Add input")),
-              // ElevatedButton(
-              //     onPressed: () {
-              //       Navigator.push(
-              //           context,
-              //           MaterialPageRoute(
-              //             builder: (context) => CekPage(),
-              //           ));
-              //     },
-              //     child: Text("CekPage")),
+              ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CekPage(),
+                        ));
+                  },
+                  child: Text("CekPage")),
               StorageOption(),
             ],
           ),

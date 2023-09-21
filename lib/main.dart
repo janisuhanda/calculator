@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'database_helper.dart';
 import 'screen_nol.dart';
+import './bloc/export.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(providers: [
+      BlocProvider(
+        create: (context) => RecogBloc(),
+      )
+    ], child: App());
+  }
 }
 
 class App extends StatelessWidget {
